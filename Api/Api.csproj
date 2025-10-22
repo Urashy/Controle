@@ -20,8 +20,6 @@
   <ItemGroup>
     <Folder Include="Mapper\" />
     <Folder Include="Models\DTO\" />
-    <Folder Include="Models\EntityFramework\" />
-    <Folder Include="Models\Repository\Interfaces\" />
     <Folder Include="Models\Strategy\" />
   </ItemGroup>
 

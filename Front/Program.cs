@@ -12,6 +12,12 @@ namespace Front
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
+            builder.Services.AddHttpClient("ApiClient", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7040/"); // Port de ton API
+            });
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
