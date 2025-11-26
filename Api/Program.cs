@@ -13,7 +13,7 @@ namespace Api
 
 
             var connectionString = builder.Configuration.GetConnectionString("LocalConnection");
-            builder.Services.AddDbContext<BDContext>(options =>
+            builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
             builder.Services.AddCors(options =>
