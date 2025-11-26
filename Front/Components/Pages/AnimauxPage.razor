@@ -1,0 +1,191 @@
+﻿@page "/animaux"
+@rendermode InteractiveServer
+@using Front.ViewModels
+@using Front.Models
+@inject AnimalViewModel ViewModel
+
+<PageTitle>Gestion des Animaux</PageTitle>
+
+<div class="container-fluid">
+    <h1 class="mb-4">🦁 Gestion des Animaux</h1>
+
+    @if (!string.IsNullOrEmpty(ViewModel.ErrorMessage))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @ViewModel.ErrorMessage
+            <button type="button" class="btn-close" @onclick="@(() => ViewModel.ErrorMessage = string.Empty)"></button>
+        </div>
+    }
+
+    @if (!ViewModel.IsEditing && !ViewModel.IsAdding)
+    {
+        <!-- Liste des animaux -->
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h5 class="mb-0">Liste des animaux</h5>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <button class="btn btn-light btn-sm" @onclick="ViewModel.StartAdd">
+                            ➕ Ajouter un animal
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Barre de recherche -->
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text">🔍</span>
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Rechercher par nom..."
+                               @bind="ViewModel.SearchText"
+                               @bind:event="oninput" />
+                        <button class="btn btn-primary" @onclick="SearchAnimals">
+                            Rechercher
+                        </button>
+                        <button class="btn btn-secondary" @onclick="ClearSearch">
+                            Effacer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tableau -->
+                @if (ViewModel.FilteredAnimals.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom</th>
+                                    <th>Espèce</th>
+                                    <th>Poids (kg)</th>
+                                    <th>Taille (cm)</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var animal in ViewModel.FilteredAnimals)
+                                {
+                                    <tr>
+                                        <td>@animal.Id</td>
+                                        <td><strong>@animal.Name</strong></td>
+                                        <td>@animal.Species</td>
+                                        <td>@animal.Poids kg</td>
+                                        <td>@animal.Taille cm</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-warning me-1"
+                                                    @onclick="@(() => ViewModel.StartEdit(animal))">
+                                                ✏️ Modifier
+                                            </button>
+                                            <button class="btn btn-sm btn-danger"
+                                                    @onclick="@(async () => await DeleteAnimal(animal))">
+                                                🗑️ Supprimer
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-muted">
+                        <small>@ViewModel.FilteredAnimals.Count animal(x) trouvé(s)</small>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        Aucun animal trouvé. @(string.IsNullOrWhiteSpace(ViewModel.SearchText) ? "Ajoutez-en un !" : "Essayez une autre recherche.")
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Formulaire d'édition/ajout -->
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    @(ViewModel.IsAdding ? "➕ Ajouter un animal" : "✏️ Modifier un animal")
+                </h5>
+            </div>
+            <div class="card-body">
+                <EditForm Model="ViewModel.EditAnimal" OnValidSubmit="SaveAnimal">
+                    <DataAnnotationsValidator />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nom</label>
+                            <InputText class="form-control" @bind-Value="ViewModel.EditAnimal.Name" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Espèce</label>
+                            <InputText class="form-control" @bind-Value="ViewModel.EditAnimal.Species" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Poids (kg)</label>
+                            <InputNumber class="form-control" @bind-Value="ViewModel.EditAnimal.Poids" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Taille (cm)</label>
+                            <InputNumber class="form-control" @bind-Value="ViewModel.EditAnimal.Taille" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">
+                            💾 Sauvegarder
+                        </button>
+                        <button type="button" class="btn btn-secondary" @onclick="ViewModel.CancelEdit">
+                            ❌ Annuler
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.LoadAnimalsAsync();
+    }
+
+    private async Task SearchAnimals()
+    {
+        await ViewModel.SearchAnimalsByNameAsync();
+    }
+
+    private async Task ClearSearch()
+    {
+        ViewModel.SearchText = string.Empty;
+        await ViewModel.LoadAnimalsAsync();
+    }
+
+    private async Task SaveAnimal()
+    {
+        await ViewModel.SaveAnimalAsync();
+    }
+
+    private async Task DeleteAnimal(AnimalDTO animal)
+    {
+        var confirmed = await JSRuntime.InvokeAsync<bool>("confirm",
+            $"Êtes-vous sûr de vouloir supprimer {animal.Name} ?");
+
+        if (confirmed)
+        {
+            await ViewModel.DeleteAnimalAsync(animal.Id);
+        }
+    }
+
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; } = default!;
+}

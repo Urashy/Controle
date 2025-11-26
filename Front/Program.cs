@@ -1,4 +1,6 @@
 using Front.Components;
+using Front.Services;
+using Front.ViewModels;
 
 namespace Front
 {
@@ -14,9 +16,11 @@ namespace Front
 
             builder.Services.AddHttpClient("ApiClient", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7040/"); // Port de ton API
+                client.BaseAddress = new Uri("https://localhost:7040/"); 
             });
 
+            builder.Services.AddScoped<IAnimalService, AnimalService>();
+            builder.Services.AddScoped<AnimalViewModel>();
 
             var app = builder.Build();
 
