@@ -70,11 +70,22 @@ namespace Front.Services
             try
             {
                 var client = _httpClientFactory.CreateClient("ApiClient");
-                var response = await client.PutAsJsonAsync($"api/Animal/{id}", animal);
+
+                var animalToUpdate = new AnimalDTO
+                {
+                    Id = id,
+                    Name = animal.Name,
+                    Species = animal.Species,
+                    Poids = animal.Poids,
+                    Taille = animal.Taille
+                };
+
+                var response = await client.PutAsJsonAsync($"api/Animal/{id}", animalToUpdate);
                 return response.IsSuccessStatusCode;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Erreur UpdateAnimal: {ex.Message}");
                 return false;
             }
         }

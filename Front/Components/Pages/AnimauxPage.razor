@@ -7,7 +7,7 @@
 <PageTitle>Gestion des Animaux</PageTitle>
 
 <div class="container-fluid">
-    <h1 class="mb-4">🦁 Gestion des Animaux</h1>
+    <h1 class="mb-4">Gestion des Animaux</h1>
 
     @if (!string.IsNullOrEmpty(ViewModel.ErrorMessage))
     {
@@ -19,7 +19,6 @@
 
     @if (!ViewModel.IsEditing && !ViewModel.IsAdding)
     {
-        <!-- Liste des animaux -->
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
                 <div class="row align-items-center">
@@ -28,16 +27,14 @@
                     </div>
                     <div class="col-md-6 text-end">
                         <button class="btn btn-light btn-sm" @onclick="ViewModel.StartAdd">
-                            ➕ Ajouter un animal
+                            Ajouter un animal
                         </button>
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <!-- Barre de recherche -->
                 <div class="mb-3">
                     <div class="input-group">
-                        <span class="input-group-text">🔍</span>
                         <input type="text"
                                class="form-control"
                                placeholder="Rechercher par nom..."
@@ -52,7 +49,6 @@
                     </div>
                 </div>
 
-                <!-- Tableau -->
                 @if (ViewModel.FilteredAnimals.Any())
                 {
                     <div class="table-responsive">
@@ -79,11 +75,11 @@
                                         <td class="text-center">
                                             <button class="btn btn-sm btn-warning me-1"
                                                     @onclick="@(() => ViewModel.StartEdit(animal))">
-                                                ✏️ Modifier
+                                                Modifier
                                             </button>
                                             <button class="btn btn-sm btn-danger"
                                                     @onclick="@(async () => await DeleteAnimal(animal))">
-                                                🗑️ Supprimer
+                                                Supprimer
                                             </button>
                                         </td>
                                     </tr>
@@ -106,11 +102,10 @@
     }
     else
     {
-        <!-- Formulaire d'édition/ajout -->
         <div class="card shadow">
             <div class="card-header bg-success text-white">
                 <h5 class="mb-0">
-                    @(ViewModel.IsAdding ? "➕ Ajouter un animal" : "✏️ Modifier un animal")
+                    @(ViewModel.IsAdding ? "Ajouter un animal" : "Modifier un animal")
                 </h5>
             </div>
             <div class="card-body">
@@ -141,10 +136,10 @@
 
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-success">
-                            💾 Sauvegarder
+                            Sauvegarder
                         </button>
                         <button type="button" class="btn btn-secondary" @onclick="ViewModel.CancelEdit">
-                            ❌ Annuler
+                            Annuler
                         </button>
                     </div>
                 </EditForm>
