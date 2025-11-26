@@ -15,9 +15,6 @@ namespace Api.Models.EntityFramework
 
         public virtual DbSet<Animal> Animaux { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Server=localhost; port=5432; Database=R508_DS; uid=postgres; password=postgres;");
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("public");

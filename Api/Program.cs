@@ -1,5 +1,8 @@
 
+using Api.Managers;
+using Api.Models;
 using Api.Models.EntityFramework;
+using Api.Models.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -10,6 +13,8 @@ namespace Api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddScoped<IAnimalRepository<Animal, int, string>, AnimalManager>();
 
 
             var connectionString = builder.Configuration.GetConnectionString("LocalConnection");
