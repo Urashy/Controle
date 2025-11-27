@@ -17,7 +17,7 @@ namespace Api.Controllers
         private readonly AppDbContext _context;
 
         /// <summary>
-        /// Constructeur pour le contrôleur SoftwaresController.
+        /// Constructeur pour le contrôleur animalController.
         /// </summary>
         /// <param name="repository">Le DataRepository utilisé pour accéder aux logiciels.</param>
         public AnimalController(IAnimalRepository<Animal, int, string> repository)
@@ -38,7 +38,7 @@ namespace Api.Controllers
         /// <returns>Une liste de logiciels sous forme de réponse HTTP 200 OK.</returns>
         /// <response code="200">La liste des logiciels a été récupérée avec succès.</response>
         /// <response code="500">Une erreur interne s'est produite sur le serveur.</response>
-        // GET: Softwares
+        // GET: animal
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -51,14 +51,14 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Récupère un software avec son id.
+        /// Récupère un animal avec son id.
         /// </summary>
-        /// <param name="id">L'id du software.</param>
-        /// <returns>Un software sous forme de réponse HTTP 200 OK.</returns>
-        /// <response code="200">Le software a été récupéré avec succès.</response>
-        /// <response code="404">Le software demandé n'existe pas.</response>
+        /// <param name="id">L'id du animal.</param>
+        /// <returns>Un animal sous forme de réponse HTTP 200 OK.</returns>
+        /// <response code="200">Le animal a été récupéré avec succès.</response>
+        /// <response code="404">Le animal demandé n'existe pas.</response>
         /// <response code="500">Une erreur interne s'est produite sur le serveur.</response>
-        // GET: Softwares/GetById/5
+        // GET: animal/GetById/5
         [HttpGet]
         [Route("[action]/{id}")]
         [ActionName("GetById")]
@@ -78,14 +78,14 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Récupère une liste de softwares avec une référence.
+        /// Récupère une liste de animal avec une référence.
         /// </summary>
-        /// <param name="reference">La référence du software.</param>
-        /// <returns>Une liste de softwares sous forme de réponse HTTP 200 OK.</returns>
-        /// <response code="200">Les softwares ont été récupéré avec succès.</response>
-        /// <response code="404">Le software demandé n'existe pas.</response>
+        /// <param name="reference">La référence du animal.</param>
+        /// <returns>Une liste de animal sous forme de réponse HTTP 200 OK.</returns>
+        /// <response code="200">Les animal ont été récupéré avec succès.</response>
+        /// <response code="404">Le animal demandé n'existe pas.</response>
         /// <response code="500">Une erreur interne s'est produite sur le serveur.</response>
-        // GET: Softwares/GetByReference/5
+        // GET: animal/GetByReference/5
         [HttpGet]
         [Route("[action]/{name}")]
         [ActionName("GetByName")]
@@ -106,22 +106,22 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Modifie un software.
+        /// Modifie un animal.
         /// </summary>
-        /// <param name="id">L'id du software.</param>
-        /// <param name="software">L'objet software.</param>
+        /// <param name="id">L'id du animal.</param>
+        /// <param name="animal">L'objet animal.</param>
         /// <returns>Une réponse HTTP 204 NoContent.</returns>
-        /// <response code="204">Le software a été modifié avec succès.</response>
-        /// <response code="400">L'id donné ne correspond pas à l'id du software.</response>
-        /// <response code="404">Le software n'existe pas.</response>
+        /// <response code="204">Le animal a été modifié avec succès.</response>
+        /// <response code="400">L'id donné ne correspond pas à l'id du animal.</response>
+        /// <response code="404">Le animal n'existe pas.</response>
         /// <response code="500">Une erreur interne s'est produite sur le serveur.</response>
-        // PUT: Softwares/Put/5
+        // PUT: animal/Put/5
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PutSoftware(int id, Animal animal)
+        public async Task<IActionResult> PutAnimal(int id, Animal animal)
         {
             if (id != animal.Id)
             {
@@ -144,19 +144,19 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Créer un software.
+        /// Créer un animal.
         /// </summary>
-        /// <param name="softwareDto">L'objet software.</param>
+        /// <param name="animalDto">L'objet animal.</param>
         /// <returns>Une réponse HTTP 201 Created.</returns>
-        /// <response code="201">Le software a été créé avec succès.</response>
-        /// <response code="400">Le format du software est incorrect.</response>
+        /// <response code="201">Le animal a été créé avec succès.</response>
+        /// <response code="400">Le format du animal est incorrect.</response>
         /// <response code="500">Une erreur interne s'est produite sur le serveur.</response>
-        // POST: Softwares/Post
+        // POST: animal/Post
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<Animal>> PostSoftware(AnimalDTO animalDto)
+        public async Task<ActionResult<Animal>> PostAnimal(AnimalDTO animalDto)
         {
             if (!ModelState.IsValid)
             {
@@ -170,19 +170,19 @@ namespace Api.Controllers
         }
 
         /// <summary>
-        /// Supprime un software.
+        /// Supprime un animal.
         /// </summary>
-        /// <param name="id">L'id du software.</param>
+        /// <param name="id">L'id du animal.</param>
         /// <returns>Une réponse HTTP 204 No Content.</returns>
-        /// <response code="204">Le software a été supprimé avec succès.</response>
-        /// <response code="404">Le software n'existe pas.</response>
+        /// <response code="204">Le animal a été supprimé avec succès.</response>
+        /// <response code="404">Le animal n'existe pas.</response>
         /// <response code="500">Une erreur interne s'est produite sur le serveur.</response>
-        // DELETE: Softwares/Delete/5
+        // DELETE: animal/Delete/5
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteSoftware(int id)
+        public async Task<IActionResult> DeleteAnimal(int id)
         {
             Animal animal = await _repository.GetByIdAsync(id);
 
